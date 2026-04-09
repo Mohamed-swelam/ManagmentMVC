@@ -1,9 +1,10 @@
 ﻿@model Department
 
-<a class="btn btn-outline-primary" asp-action="Index" asp-controller="Department">Back To List</a>
-<br />
-<br />
+
 <div class="container mt-4">
+    <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Department">Back To List</a>
+    <br />
+    <br />
     <div class="card shadow mb-4">
         <div class="card-body">
             <h2 class="card-title text-primary">@Model.DeptName</h2>
@@ -87,3 +88,7 @@
     </div>
 
 </div>
+
+@section Page{
+            Department Details (@Model.DeptName)
+}

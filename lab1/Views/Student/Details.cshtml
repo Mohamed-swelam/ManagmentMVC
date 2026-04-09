@@ -3,7 +3,20 @@
 
 
 <div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="@Model.Image" style="height:250px; object-fit:cover;">
+    @if (!string.IsNullOrEmpty(Model.Image))
+    {
+        <img class="card-img-top" src="@Model.Image" style="height:250px; object-fit:cover;">
+    }
+    else
+    {
+        <div class="card-img-top d-flex justify-content-center align-items-center bg-light"
+             style="height:250px;">
+
+            <i class="fa-solid fa-circle-user text-secondary"
+               style="font-size:180px; line-height:1;"></i>
+
+        </div>
+    }
 
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
@@ -16,3 +29,8 @@
         </p>
     </div>
 </div>
+
+
+@section Page {
+            Student Details / @Model.SSN
+}

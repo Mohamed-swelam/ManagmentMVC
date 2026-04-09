@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>University System</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- FontAwesome -->
+    @* <link rel="stylesheet" href="~/css/font-awesome.min.css"> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom -->
+    <link rel="stylesheet" href="~/css/style.css" />
+
+    <style>
+        .text-shadow {
+            text-shadow: 0 3px 10px rgba(0,0,0,0.9);
+        }
+
+        .hero-bg {
+            background: url('/images/img/page-background.jpg') center/cover no-repeat;
+            height: 300px;
+            position: relative;
+        }
+
+        .hero-overlay {
+            background: rgba(0,0,0,0.35);
+            position: absolute;
+            inset: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--  Header -->
+    <header id="header" class="bg-white shadow-sm sticky-top">
+        <div class="container">
+
+            <nav class="navbar navbar-expand-lg navbar-light">
+
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold fs-4" asp-controller="Student" asp-action="Index">
+                    <img src="~/images/img/logo.png" style="height:40px;" alt="logo">
+                </a>
+
+                <!-- Toggle -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Menu -->
+                <div class="collapse navbar-collapse" id="nav">
+
+                    <!-- Links -->
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold " asp-controller="Student" asp-action="Index">
+                                Students
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold " asp-controller="Department" asp-action="Index">
+                                Departments
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold " asp-controller="Course" asp-action="Index">
+                                Courses
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link fw-semibold px-2 " asp-controller="Instructor" asp-action="Index">
+                                Instructors
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- 🔥 Hero Area -->
+    <div class="hero-area">
+        <div class="hero-bg d-flex align-items-center justify-content-center text-center">
+
+            <!-- Overlay -->
+            <div class="hero-overlay"></div>
+
+            <div class="container position-relative">
+
+                <ul class="list-inline mb-0 text-white fw-bold text-shadow
+                           px-3 py-2 rounded d-inline-block hero-text"
+                    style="background: rgba(0,0,0,0.4);">
+
+                    <li class="list-inline-item fs-6 fs-md-5">
+                        <a asp-controller="Student" asp-action="Index" class="text-white text-decoration-none">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="list-inline-item">/</li>
+
+                    <li class="list-inline-item fs-6 fs-md-5">
+                        @RenderSection("Page", required: false)
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-5 pt-4">
+
+        <div class="container">
+            <div class="row text-center text-md-start">
+
+                <!-- About -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold text-info">EduSite</h5>
+                    <p class="small text-light">
+                        Simple university system for managing students, courses, and instructors.
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div class="col-md-4 mb-3">
+                    <h6 class="fw-semibold text-info">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a class="text-light text-decoration-none" asp-controller="Student" asp-action="Index">Students</a></li>
+                        <li><a class="text-light text-decoration-none" asp-controller="Department" asp-action="Index">Departments</a></li>
+                        <li><a class="text-light text-decoration-none" asp-controller="Course" asp-action="Index">Courses</a></li>
+                        <li><a class="text-light text-decoration-none" asp-controller="Instructor" asp-action="Index">Instructors</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-4 mb-3">
+                    <h6 class="fw-semibold text-info">Contact</h6>
+                    <p class="mb-1 text-light">
+                        <i class="fa-solid fa-envelope me-2 text-info"></i> info@university.com
+                    </p>
+                    <p class="mb-1 text-light">
+                        <i class="fa-solid fa-phone me-2 text-success"></i> +20 100 123 4567
+                    </p>
+                    <p class="text-light">
+                        <i class="fa-solid fa-location-dot me-2 text-danger"></i> Alexandria, Egypt
+                    </p>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary">
+
+            <!-- Bottom -->
+            <div class="text-center pb-3">
+                <p class="mb-0 small text-light">
+                    © 2026 University System | All Rights Reserved
+                </p>
+            </div>
+        </div>
+
+    </footer>
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
