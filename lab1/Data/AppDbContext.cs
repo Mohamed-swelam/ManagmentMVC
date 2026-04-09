@@ -18,6 +18,18 @@ namespace lab1.Data
 
             modelBuilder.Entity<Stud_Course>()
                 .HasKey(sc => new { sc.SSN, sc.crs_Id });
+
+            modelBuilder.Entity<Student>()
+               .HasOne(s => s.Department)
+               .WithMany(d => d.Students)
+               .HasForeignKey(s => s.DeptId)
+               .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Instructor>()
+                .HasOne(i => i.Department)
+                .WithMany(d => d.Instructors)
+                .HasForeignKey(i => i.DeptId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
         public DbSet<Student> Students { get; set; }

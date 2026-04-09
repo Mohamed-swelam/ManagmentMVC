@@ -20,7 +20,7 @@ namespace lab1.Models
         public string? ins_Address { get; set; }
 
         [ForeignKey(nameof(Department))]
-        public int DeptId { get; set; }
+        public int? DeptId { get; set; }
         public Department? Department { get; set; }
 
         public ICollection<Ins_Course> ins_Courses { get; set; } = new HashSet<Ins_Course>();

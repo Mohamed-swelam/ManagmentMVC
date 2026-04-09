@@ -1,0 +1,28 @@
+﻿@model Course
+
+
+
+<form asp-action="Add" asp-controller="Course" method="post">
+    <div class="form-group">
+        <label asp-for="crs_Name"></label>
+        <input class="form-control" asp-for="crs_Name">
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description">
+    </div>
+    <div class="form-group">
+        <label asp-for="Topics"></label>
+        <input class="form-control" asp-for="Topics">
+    </div>
+    <div class="form-group">
+        <label asp-for="TotalDegree"></label>
+        <input class="form-control" asp-for="TotalDegree">
+    </div>
+    <div class="form-group">
+        <label asp-for="MinimumDegree"></label>
+        <input class="form-control" asp-for="MinimumDegree">
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

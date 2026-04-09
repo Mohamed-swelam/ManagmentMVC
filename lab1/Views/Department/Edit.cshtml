@@ -1,0 +1,34 @@
+﻿@model Department
+
+<div class="row">
+    <div class="col-12"><a asp-action="Index" asp-controller="Department" class="btn btn-primary">Back to List</a></div>
+    <div class="col-md-8">
+        <form asp-action="Edit" asp-controller="Department" asp-route-id="@Model.DeptId" method="post">
+            <input type="hidden" asp-for="DeptId" />
+            <div class="form-group">
+                <label asp-for="DeptName"></label>
+                <input class="form-control" asp-for="DeptName">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location"></label>
+                <input class="form-control" asp-for="Location">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input class="form-control" asp-for="PhoneNumber">
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+

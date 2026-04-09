@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lab1.Data;
 
@@ -11,9 +12,11 @@ using lab1.Data;
 namespace lab1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260409130124_updateOndeleteForDepartment")]
+    partial class updateOndeleteForDepartment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,7 @@ namespace lab1.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Topics")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalDegree")
@@ -198,7 +202,7 @@ namespace lab1.Migrations
             modelBuilder.Entity("lab1.Models.Ins_Course", b =>
                 {
                     b.HasOne("lab1.Models.Course", "Course")
-                        .WithMany("Ins_Courses")
+                        .WithMany()
                         .HasForeignKey("Coursecrs_Id");
 
                     b.HasOne("lab1.Models.Instructor", "Instructor")
@@ -229,7 +233,7 @@ namespace lab1.Migrations
                         .IsRequired();
 
                     b.HasOne("lab1.Models.Course", "Course")
-                        .WithMany("Stud_Courses")
+                        .WithMany()
                         .HasForeignKey("crs_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -247,13 +251,6 @@ namespace lab1.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("lab1.Models.Course", b =>
-                {
-                    b.Navigation("Ins_Courses");
-
-                    b.Navigation("Stud_Courses");
                 });
 
             modelBuilder.Entity("lab1.Models.Department", b =>

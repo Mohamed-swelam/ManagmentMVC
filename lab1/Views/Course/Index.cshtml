@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Course>
+
+
+<a class="btn btn-outline-primary" asp-action="Add" asp-controller="Course">Add Course</a>
+<br />
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Course ID</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">TotalDegree</th>
+            <th scope="col">MinimumDegree</th>
+            <th scope="col">Topics</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.crs_Id</th>
+                <td>@item.crs_Name</td>
+                <td>@item.Description</td>
+                <td>@item.TotalDegree</td>
+                <td>@item.MinimumDegree</td>
+                <td>@item.Topics</td>
+                @* <td>
+                    <a asp-action="getbyId" asp-controller="Student" asp-route-id="@item.SSN"
+                       class="btn btn-info btn-sm">
+                        View
+                    </a>
+
+                    <a asp-action="Edit" asp-controller="Student" asp-route-id="@item.SSN"
+                       class="btn btn-warning">
+                        Edit
+                    </a>
+                </td> *@
+            </tr>
+        }
+
+    </tbody>
+</table>

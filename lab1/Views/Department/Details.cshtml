@@ -1,0 +1,89 @@
+﻿@model Department
+
+<a class="btn btn-outline-primary" asp-action="Index" asp-controller="Department">Back To List</a>
+<br />
+<br />
+<div class="container mt-4">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h2 class="card-title text-primary">@Model.DeptName</h2>
+            <p class="card-text"><strong>Location:</strong> @Model.Location</p>
+            <p class="card-text"><strong>Phone:</strong> @Model.PhoneNumber</p>
+        </div>
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5>Students</h5>
+                    <h3 class="text-primary">@Model.Students.Count</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5>Instructors</h5>
+                    <h3 class="text-success">@Model.Instructors.Count</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Students
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model.Students)
+                    {
+                        <tr>
+                            <td>@s.Name</td>
+                            <td>@s.Email</td>
+                            <td>@s.Phone</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            Instructors
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Degree</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model.Instructors)
+                    {
+                        <tr>
+                            <td>@i.ins_Name</td>
+                            <td>@i.ins_Email</td>
+                            <td>@i.ins_Degree</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

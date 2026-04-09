@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Department>
+
+
+<a class="btn btn-outline-primary" asp-action="Add" asp-controller="Department">Add Department</a>
+<br />
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">PhoneNumber</th>
+            <th scope="col">Students Count</th>
+            <th scope="col">Instructors Count</th>
+            <th scope="col">Actions</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.DeptId</th>
+                <td>@item.DeptName</td>
+                <td>@item.Location</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Students.Count</td>
+                <td>@item.Instructors.Count</td>
+                
+
+                <td>
+                    <a asp-action="Details" asp-controller="Department" asp-route-id="@item.DeptId"
+                       class="btn btn-info">
+                        View
+                    </a>
+
+                    <a asp-action="Edit" asp-controller="Department" asp-route-id="@item.DeptId"
+                       class="btn btn-warning">
+                        Edit
+                    </a>
+
+                    <a asp-action="Delete" asp-controller="Department" asp-route-id="@item.DeptId"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+
