@@ -1,4 +1,4 @@
-﻿
+﻿@model GetStudentWithFullDetialsVM
 
 
 
@@ -22,15 +22,34 @@
         <h5 class="card-title">@Model.Name</h5>
 
         <p class="card-text">
-            <strong>SSN:</strong> @Model.SSN <br />
             <strong>Email:</strong> @Model.Email <br />
             <strong>Phone:</strong> @Model.Phone <br />
+            <strong>Department:</strong> @Model.DeptName <br />
             <strong>Address:</strong> @Model.Address
         </p>
+
+        <ul class="list-group list-group-flush">
+            @foreach (var course in Model.Courses)
+            {
+                var color = course.Grade < course.MinimumDegree ? "text-danger" : "text-success";
+                <li class="list-group-item d-flex justify-content-between align-items-center @color">
+
+                    <span>@course.CourseName - @course.Grade</span>
+
+                    <div>
+                        <a asp-action="EditCourse" asp-controller="Student" class="btn btn-warning ">Edit</a>
+                        <a asp-action="UnAssignCourse" asp-controller="Student" class="btn btn-danger">Delete</a>
+                    </div>
+
+                </li>
+            }
+        </ul>
+        <br />
+        <a asp-action="AssignCourse" asp-controller="Student" asp-route-id ="@Model.SSN" class="btn btn-info">Add Course</a>
     </div>
 </div>
 
 
 @section Page {
-            Student Details / @Model.SSN
+            Student Details / @Model.Name
 }

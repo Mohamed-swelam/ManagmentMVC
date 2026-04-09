@@ -1,0 +1,27 @@
+﻿@model List<Course>
+
+<h2>Select Course</h2>
+
+<form asp-action="AssignCourse">
+    <input type="hidden" name="studentId" value="@ViewBag.StudentId" />
+
+    <select name="courseId" class="form-control">
+        @foreach (var course in Model)
+        {
+            <option value="@course.crs_Id">@course.crs_Name</option>
+        }
+    </select>
+
+    <button type="submit" class="btn btn-success mt-2">Assign</button>
+</form>
+
+
+
+@section Page {
+                Student Details / AssignCourse
+}
+
+
+
+
+

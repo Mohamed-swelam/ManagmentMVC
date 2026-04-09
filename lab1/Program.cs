@@ -1,3 +1,5 @@
+using lab1.Mapping;
+using AutoMapper;
 namespace lab1
 {
     public class Program
@@ -8,6 +10,8 @@ namespace lab1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             var app = builder.Build();
 

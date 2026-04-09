@@ -1,11 +1,12 @@
-﻿using lab1.Models;
+﻿using lab1.ViewModels.CourseVM;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace lab1.ViewModels.Student
+namespace lab1.ViewModels.StudentVM
 {
     public class GetStudentWithFullDetialsVM
     {
+        public int SSN { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string? Phone { get; set; }
@@ -15,6 +16,6 @@ namespace lab1.ViewModels.Student
 
         public string DeptName { get; set; }
 
-        public List<Course>? Courses { get; set; }
+        public List<CourseWithDegreeVM>? Courses { get; set; }
     }
 }

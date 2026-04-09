@@ -1,5 +1,8 @@
-﻿using lab1.Data;
+﻿using AutoMapper;
+using lab1.Data;
 using lab1.Models;
+using lab1.ViewModels.CourseVM;
+using lab1.ViewModels.StudentVM;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +13,12 @@ namespace lab1.Controllers
     {
         AppDbContext _dbContext = new AppDbContext();
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IMapper mapper;
 
-        public StudentController(IWebHostEnvironment webHostEnvironment)
+        public StudentController(IWebHostEnvironment webHostEnvironment,IMapper mapper)
         {
             this.webHostEnvironment = webHostEnvironment;
+            this.mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -21,14 +26,16 @@ namespace lab1.Controllers
             return View("Index",students);
         }
 
-        public IActionResult getbyId(int id)
+        public IActionResult Details(int id)
         {
-            var student = _dbContext.Students.FirstOrDefault(s => s.SSN == id);
+            var student = _dbContext.Students
+                .Include(s => s.Department)
+                .Include(s => s.Stud_Courses)
+                .ThenInclude(sc => sc.Course)
+                .FirstOrDefault(s => s.SSN == id);
 
-            
-
-
-            return View("Details",student);
+            var vm = mapper.Map<GetStudentWithFullDetialsVM>(student);
+            return View("Details", vm);
         }
 
         public IActionResult Add()
@@ -115,6 +122,38 @@ namespace lab1.Controllers
                 ViewBag.Departments = _dbContext.Departments.ToList();
                 return View("Edit", student);
             }
+        }
+
+
+        public IActionResult AssignCourse(int id)
+        {
+            var courses = _dbContext.Courses
+                .Where(c => !_dbContext.Stud_Courses
+                    .Any(sc => sc.SSN == id && sc.crs_Id == c.crs_Id))
+                .ToList();
+            ViewBag.StudentId = id;
+            return View(courses);
+        }
+
+        [HttpPost]
+        public IActionResult AssignCourse(int studentId, int courseId)
+        {
+            var exists = _dbContext.Stud_Courses
+                .Any(sc => sc.SSN == studentId && sc.crs_Id == courseId);
+
+            if (!exists)
+            {
+                _dbContext.Stud_Courses.Add(new Stud_Course
+                {
+                    SSN = studentId,
+                    crs_Id = courseId,
+                    Grade = 0
+                });
+
+                _dbContext.SaveChanges();
+            }
+
+            return RedirectToAction("Details", new { id = studentId });
         }
 
         public IActionResult Delete(int id)
