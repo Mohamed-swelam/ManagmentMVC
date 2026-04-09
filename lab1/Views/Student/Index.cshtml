@@ -1,0 +1,30 @@
+﻿
+
+
+
+<a class="btn btn-outline-primary" href="/Student/Add">Add Student</a>
+<br />
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">SSN</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model){
+            <tr>
+                <th scope="row">@item.SSN</th>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Address</td>
+                <td>@item.Phone</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
