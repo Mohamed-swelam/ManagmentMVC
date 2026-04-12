@@ -1,0 +1,75 @@
+﻿@using lab1.ViewModels.InstructorVM
+@model InstructorDetailsVM
+
+@{
+    ViewData["Title"] = "Instructor Details";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-gradient bg-primary text-white">
+            <h3>@Model.ins_Name</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p><strong>ID:</strong> @Model.ins_Id</p>
+                    <p><strong>Age:</strong> @Model.Age</p>
+                    <p><strong>Salary:</strong> @Model.Salary.ToString("C")</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p><strong>Email:</strong> @Model.ins_Email</p>
+                    <p><strong>Degree:</strong> @Model.ins_Degree</p>
+                    <p><strong>Address:</strong> @Model.ins_Address</p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <p><strong>Department:</strong> @Model.DeptName</p>
+            </div>
+
+            <hr />
+
+            <h4 class="mb-3">Courses</h4>
+
+            @if (Model.Courses.Any())
+            {
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                            <th>Hours</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model.Courses)
+                        {
+                            <tr>
+                                <td>@course.CourseId</td>
+                                <td>@course.CourseName</td>
+                                <td>@course.Hours</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-warning">
+                    No courses assigned.
+                </div>
+            }
+
+        </div>
+
+        <div class="card-footer text-end">
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+
+</div>

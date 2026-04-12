@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using lab1.Validators;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace lab1.Models
@@ -8,14 +9,16 @@ namespace lab1.Models
         [Key]
         public int ins_Id { get; set; }
         [Required]
-        [StringLength(100)]
+        [MaxLength(30,ErrorMessage ="Name cannot exceed 30 characters")]
         public string ins_Name { get; set; }
         public int Age { get; set; }
+        [Range(5000,15000,ErrorMessage ="Salary must be between 5000 and 15000")]
         public double Salary { get; set; }
         //degree
         public string? ins_Degree { get; set; }
         [EmailAddress]
-        [Required]
+        [Required(ErrorMessage ="Email is required")]
+        [UniqueEmail(ErrorMessage = "There is an Instructor with this Email")]
         public string ins_Email { get; set; }
         public string? ins_Address { get; set; }
 

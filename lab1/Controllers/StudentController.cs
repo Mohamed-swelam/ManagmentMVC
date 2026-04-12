@@ -96,7 +96,7 @@ namespace lab1.Controllers
         [HttpPost]
         public IActionResult Edit(Student student, IFormFile? File)
         {
-            if (student.Name != null && student.Email != null)
+            if (ModelState.IsValid)
             {
                 if (File != null)
                 {

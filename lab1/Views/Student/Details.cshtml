@@ -1,57 +1,105 @@
 ﻿@model GetStudentWithFullDetialsVM
 
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
+        <div class="bg-primary text-white p-4 d-flex align-items-center gap-4">
 
-<div class="card" style="width: 18rem;">
-    @if (!string.IsNullOrEmpty(Model.Image))
-    {
-        <img class="card-img-top" src="@Model.Image" style="height:250px; object-fit:cover;">
-    }
-    else
-    {
-        <div class="card-img-top d-flex justify-content-center align-items-center bg-light"
-             style="height:250px;">
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="@Model.Image"
+                     class="rounded-circle border border-3 border-white"
+                     style="width:120px; height:120px; object-fit:cover;">
+            }
+            else
+            {
+                <div class="bg-light rounded-circle d-flex justify-content-center align-items-center"
+                     style="width:120px; height:120px;">
+                    <i class="fa-solid fa-user text-secondary" style="font-size:60px;"></i>
+                </div>
+            }
 
-            <i class="fa-solid fa-circle-user text-secondary"
-               style="font-size:180px; line-height:1;"></i>
+            <div>
+                <h3 class="mb-1">@Model.Name</h3>
+                <span class="badge bg-light text-dark">@Model.DeptName</span>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><i class="fa fa-envelope me-2 text-primary"></i>@Model.Email</p>
+                    <p><i class="fa fa-phone me-2 text-success"></i>@Model.Phone</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="fa fa-location-dot me-2 text-danger"></i>@Model.Address</p>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Courses</h4>
+                <a asp-action="AssignCourse"
+                   asp-controller="StudCourse"
+                   asp-route-id="@Model.SSN"
+                   class="btn btn-info btn-sm rounded-pill px-3">
+                    + Add Course
+                </a>
+            </div>
+
+            @if (Model.Courses.Any())
+            {
+                <div class="list-group">
+
+                    @foreach (var course in Model.Courses)
+                    {
+                        var isFail = course.Grade < course.MinimumDegree;
+
+                        <div class="list-group-item d-flex justify-content-between align-items-center rounded-3 mb-2 shadow-sm">
+
+                            <div>
+                                <h6 class="mb-1">@course.CourseName</h6>
+
+                                <span class="badge @(isFail ? "bg-danger" : "bg-success")">
+                                    Grade: @course.Grade
+                                </span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <a asp-action="EditGrade"
+                                   asp-controller="StudCourse"
+                                   asp-route-studentId="@Model.SSN"
+                                   asp-route-courseId="@course.CourseId"
+                                   class="btn btn-outline-warning btn-sm rounded-pill">
+                                    Edit
+                                </a>
+
+                                <a asp-action="UnAssignCourse"
+                                   asp-controller="StudCourse"
+                                   asp-route-studentId="@Model.SSN"
+                                   asp-route-courseId="@course.CourseId"
+                                   class="btn btn-outline-danger btn-sm rounded-pill">
+                                    Delete
+                                </a>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning text-center">
+                    No courses assigned yet.
+                </div>
+            }
 
         </div>
-    }
-
-    <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
-
-        <p class="card-text">
-            <strong>Email:</strong> @Model.Email <br />
-            <strong>Phone:</strong> @Model.Phone <br />
-            <strong>Department:</strong> @Model.DeptName <br />
-            <strong>Address:</strong> @Model.Address
-        </p>
-
-        <ul class="list-group list-group-flush">
-            @foreach (var course in Model.Courses)
-            {
-                var color = course.Grade < course.MinimumDegree ? "text-danger" : "text-success";
-                <li class="list-group-item d-flex justify-content-between align-items-center @color">
-
-                    <span>@course.CourseName - @course.Grade</span>
-
-                    <div>
-                        <a asp-action="EditGrade" asp-controller="StudCourse" asp-route-studentId="@Model.SSN"
-                           class="btn btn-warning ">Edit</a>
-                        <a asp-action="UnAssignCourse" asp-controller="StudCourse" asp-route-studentId="@Model.SSN"
-                           asp-route-courseId="@course.CourseId" class="btn btn-danger">Delete</a>
-                    </div>
-
-                </li>
-            }
-        </ul>
-        <br />
-        <a asp-action="AssignCourse" asp-controller="StudCourse" asp-route-id="@Model.SSN" class="btn btn-info">Add Course</a>
     </div>
 </div>
 
-
 @section Page {
-            Student Details / @Model.Name
+        Student Details / @Model.Name
 }
