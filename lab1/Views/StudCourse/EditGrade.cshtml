@@ -1,0 +1,47 @@
+﻿@model List<Stud_Course>
+
+<form asp-action="EditGrade" method="post">
+
+    <input type="hidden" name="studentId" value="@ViewBag.studentId" />
+
+    <label>Choose Course</label>
+    <select id="courseSelect" name="CourseId" class="form-control">
+        @foreach (var course in Model)
+        {
+            <option value="@course.crs_Id"
+                    data-max="@course.Course.TotalDegree">
+                @course.Course.crs_Name
+            </option>
+        }
+    </select>
+
+    <div class="mt-2">
+        Max Degree: <span id="maxDegree"></span>
+    </div>
+
+    <div class="mt-2">
+        <label>Grade</label>
+        <input type="number" id="gradeInput" name="Grade" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+
+</form>
+
+<script>
+    const select = document.getElementById("courseSelect");
+    const maxSpan = document.getElementById("maxDegree");
+    const gradeInput = document.getElementById("gradeInput");
+
+    function updateMax() {
+        const selected = select.options[select.selectedIndex];
+        const max = selected.getAttribute("data-max");
+
+        maxSpan.textContent = max;
+        gradeInput.max = max;
+    }
+
+    updateMax();
+
+    select.addEventListener("change", updateMax);
+</script>

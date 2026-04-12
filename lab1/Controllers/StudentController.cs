@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using lab1.Data;
+﻿using lab1.Data;
 using lab1.Models;
 using lab1.ViewModels.CourseVM;
 using lab1.ViewModels.StudentVM;
+using Mapster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,17 +13,15 @@ namespace lab1.Controllers
     {
         AppDbContext _dbContext = new AppDbContext();
         private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly IMapper mapper;
 
-        public StudentController(IWebHostEnvironment webHostEnvironment,IMapper mapper)
+        public StudentController(IWebHostEnvironment webHostEnvironment)
         {
             this.webHostEnvironment = webHostEnvironment;
-            this.mapper = mapper;
         }
         public IActionResult Index()
         {
             var students = _dbContext.Students.ToList();
-            return View("Index",students);
+            return View("Index", students);
         }
 
         public IActionResult Details(int id)
@@ -34,7 +32,7 @@ namespace lab1.Controllers
                 .ThenInclude(sc => sc.Course)
                 .FirstOrDefault(s => s.SSN == id);
 
-            var vm = mapper.Map<GetStudentWithFullDetialsVM>(student);
+            var vm = student.Adapt<GetStudentWithFullDetialsVM>();
             return View("Details", vm);
         }
 
@@ -45,19 +43,30 @@ namespace lab1.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddStudent(Student student,IFormFile? File)
+        public IActionResult AddStudent(Student student)
         {
-            if (student.Name != null && student.Email != null)
+            if (student.File != null)
+            {
+                var ext = Path.GetExtension(student.File.FileName).ToLower();
+
+                if (ext != ".jpg" && ext != ".png")
+                {
+                    ModelState.AddModelError("File", "Only .jpg or .png files are allowed");
+                }
+            }
+
+            if (ModelState.IsValid)
             {
                 string Rootfile = webHostEnvironment.WebRootPath;
-                if (File != null)
+                if (student.File != null)
                 {
-                    string Filename = Guid.NewGuid().ToString() + Path.GetExtension(File.FileName);
+
+                    string Filename = Guid.NewGuid().ToString() + Path.GetExtension(student.File.FileName);
                     string? studentpath = Path.Combine(Rootfile, @"images\students");
 
                     using (FileStream fileStream = new FileStream(Path.Combine(studentpath, Filename), FileMode.Create))
                     {
-                        File.CopyTo(fileStream);
+                        student.File.CopyTo(fileStream);
                     }
 
                     student.Image = @"/images/students/" + Filename;
@@ -85,7 +94,7 @@ namespace lab1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Student student,IFormFile? File)
+        public IActionResult Edit(Student student, IFormFile? File)
         {
             if (student.Name != null && student.Email != null)
             {
@@ -125,47 +134,14 @@ namespace lab1.Controllers
         }
 
 
-        public IActionResult AssignCourse(int id)
+        public IActionResult ValidateAddress(string Address)
         {
-            var courses = _dbContext.Courses
-                .Where(c => !_dbContext.Stud_Courses
-                    .Any(sc => sc.SSN == id && sc.crs_Id == c.crs_Id))
-                .ToList();
-            ViewBag.StudentId = id;
-            return View(courses);
+            string[] validAddresses = { "Cairo", "Alexandria", "Ismailia" };
+            bool isValid = validAddresses.Contains(Address);
+            return Json(isValid);
         }
 
-        [HttpPost]
-        public IActionResult AssignCourse(int studentId, int courseId)
-        {
-            var exists = _dbContext.Stud_Courses
-                .Any(sc => sc.SSN == studentId && sc.crs_Id == courseId);
 
-            if (!exists)
-            {
-                _dbContext.Stud_Courses.Add(new Stud_Course
-                {
-                    SSN = studentId,
-                    crs_Id = courseId,
-                    Grade = 0
-                });
 
-                _dbContext.SaveChanges();
-            }
-
-            return RedirectToAction("Details", new { id = studentId });
-        }
-
-        public IActionResult Delete(int id)
-        {
-            var student = _dbContext.Students.FirstOrDefault(s => s.SSN == id);
-            if (student != null)
-            {
-                _dbContext.Students.Remove(student);
-                _dbContext.SaveChanges();
-            }
-            return RedirectToAction("Index");
-
-        }
     }
 }

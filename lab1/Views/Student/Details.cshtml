@@ -37,15 +37,17 @@
                     <span>@course.CourseName - @course.Grade</span>
 
                     <div>
-                        <a asp-action="EditCourse" asp-controller="Student" class="btn btn-warning ">Edit</a>
-                        <a asp-action="UnAssignCourse" asp-controller="Student" class="btn btn-danger">Delete</a>
+                        <a asp-action="EditGrade" asp-controller="StudCourse" asp-route-studentId="@Model.SSN"
+                           class="btn btn-warning ">Edit</a>
+                        <a asp-action="UnAssignCourse" asp-controller="StudCourse" asp-route-studentId="@Model.SSN"
+                           asp-route-courseId="@course.CourseId" class="btn btn-danger">Delete</a>
                     </div>
 
                 </li>
             }
         </ul>
         <br />
-        <a asp-action="AssignCourse" asp-controller="Student" asp-route-id ="@Model.SSN" class="btn btn-info">Add Course</a>
+        <a asp-action="AssignCourse" asp-controller="StudCourse" asp-route-id="@Model.SSN" class="btn btn-info">Add Course</a>
     </div>
 </div>
 

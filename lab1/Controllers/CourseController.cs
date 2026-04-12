@@ -23,7 +23,7 @@ namespace lab1.Controllers
         [HttpPost]
         public IActionResult Add(Course course)
         {
-            if (course.crs_Name != null)
+            if (ModelState.IsValid)
             {
                 context.Courses.Add(course);
                 context.SaveChanges();
@@ -31,6 +31,19 @@ namespace lab1.Controllers
             }
             return View(course);
 
+        }
+
+        public IActionResult validateDegree(int TotalDegree, int MinimumDegree)
+        {
+
+            if (MinimumDegree > TotalDegree)
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
         }
     }
 }
