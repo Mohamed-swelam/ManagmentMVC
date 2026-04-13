@@ -76,6 +76,7 @@ namespace lab1.Controllers
 
                 _dbContext.Students.Add(student);
                 _dbContext.SaveChanges();
+                TempData["Success"] = "Student added successfully!";
                 return RedirectToAction("Index");
             }
             else
@@ -124,6 +125,7 @@ namespace lab1.Controllers
 
                 _dbContext.Update(student);
                 _dbContext.SaveChanges();
+                TempData["Success"] = "Student updated successfully!";
                 return RedirectToAction("Index");
             }
             else

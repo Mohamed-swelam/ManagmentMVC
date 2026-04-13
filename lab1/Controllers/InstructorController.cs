@@ -50,6 +50,7 @@ namespace lab1.Controllers
             {
                 context.Instructors.Add(instructor);
                 context.SaveChanges();
+                TempData["Success"] = "Instructor added successfully!";
                 return RedirectToAction("Index");
             }
             else
@@ -80,6 +81,7 @@ namespace lab1.Controllers
             {
                 context.Instructors.Update(instructor);
                 context.SaveChanges();
+                TempData["Success"] = "Instructor updated successfully!";
                 return RedirectToAction("Index");
             }
             else
@@ -87,6 +89,22 @@ namespace lab1.Controllers
                 ViewBag.Departments = context.Departments.ToList();
                 return View(instructor);
             }
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var instructor = context.Instructors
+                .Include(i => i.ins_Courses)
+                .FirstOrDefault(i => i.ins_Id == id);
+
+            if (instructor == null)
+                return NotFound();
+
+            context.Instructors.Remove(instructor);
+            context.SaveChanges();
+
+            TempData["Success"] = "Instructor deleted successfully!";
+            return RedirectToAction("Index");
         }
     }
 }

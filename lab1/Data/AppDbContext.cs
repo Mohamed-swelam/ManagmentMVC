@@ -30,6 +30,12 @@ namespace lab1.Data
                 .WithMany(d => d.Instructors)
                 .HasForeignKey(i => i.DeptId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Ins_Course>()
+                .HasOne(ic => ic.Instructor)
+                .WithMany(i => i.ins_Courses)
+                .HasForeignKey(ic => ic.ins_Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Student> Students { get; set; }

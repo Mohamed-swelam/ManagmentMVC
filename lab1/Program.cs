@@ -1,4 +1,5 @@
 using lab1.Mapping;
+using lab1.MiddleWares;
 using Mapster;
 namespace lab1
 {
@@ -26,7 +27,9 @@ namespace lab1
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStaticFiles();
+
 
             app.UseRouting();
 

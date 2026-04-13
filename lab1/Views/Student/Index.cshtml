@@ -1,6 +1,12 @@
 ﻿@model IEnumerable<lab1.Models.Student>
 
-
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
 <a class="btn btn-outline-primary" href="/Student/Add">Add Student</a>
 <br />
 <br />

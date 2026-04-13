@@ -39,6 +39,7 @@ namespace lab1.Controllers
             {
                 context.Departments.Add(department);
                 context.SaveChanges();
+                TempData["Success"] = "Department added successfully!";
                 return RedirectToAction("Index");
             }
             return View(department);
@@ -61,6 +62,7 @@ namespace lab1.Controllers
             {
                 context.Departments.Update(department);
                 context.SaveChanges();
+                TempData["Success"] = "Department updated successfully!";
                 return RedirectToAction("Index");
             }
             return View(department);
@@ -75,6 +77,7 @@ namespace lab1.Controllers
             }
             context.Departments.Remove(department);
             context.SaveChanges();
+            TempData["Success"] = "Department deleted successfully!";
             return RedirectToAction("Index");
         }
     }

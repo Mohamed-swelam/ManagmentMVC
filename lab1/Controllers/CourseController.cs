@@ -27,6 +27,7 @@ namespace lab1.Controllers
             {
                 context.Courses.Add(course);
                 context.SaveChanges();
+                TempData["Success"] = "Course Added Successfully";
                 return RedirectToAction("Index");
             }
             return View(course);

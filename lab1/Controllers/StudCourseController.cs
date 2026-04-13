@@ -46,6 +46,7 @@ namespace lab1.Controllers
                 });
 
                 context.SaveChanges();
+                TempData["Success"] = "Course assigned successfully.";
             }
 
             return RedirectToAction("Details", "Student", new { id = studentId });
@@ -82,6 +83,8 @@ namespace lab1.Controllers
             {
                 course.Grade = VM.Grade;
                 context.SaveChanges();
+                //TempData["Success"]
+                TempData["Success"] = "Grade updated successfully.";
                 return RedirectToAction("Details", "Student", new { id = VM.studentId });
             }
 
