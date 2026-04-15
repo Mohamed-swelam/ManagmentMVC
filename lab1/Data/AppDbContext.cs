@@ -5,11 +5,15 @@ namespace lab1.Data
 {
     public class AppDbContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public AppDbContext(DbContextOptions options): base(options)
         {
-            var connectionString = "Data Source=.;Initial Catalog=MVCITI;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-            optionsBuilder.UseSqlServer(connectionString);
+            
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var connectionString = "Data Source=.;Initial Catalog=MVCITI;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        //    optionsBuilder.UseSqlServer(connectionString);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

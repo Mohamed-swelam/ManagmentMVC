@@ -1,6 +1,10 @@
+using lab1.Data;
+using lab1.Interfaces.IRepositories;
 using lab1.Mapping;
 using lab1.MiddleWares;
+using lab1.Repositories;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 namespace lab1
 {
@@ -12,6 +16,18 @@ namespace lab1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(
+                options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
+
+
+            builder.Services.AddScoped(typeof(IGenericRepo<>), typeof(Repository<>));
+            builder.Services.AddScoped<IStudentRepo, StudentRepository>();
+            builder.Services.AddScoped<IDepartmentRepo, DepartmentRepoistory>();
+            builder.Services.AddScoped<ICourseRepo, CourseRepository>();
+            builder.Services.AddScoped<IInstructorRepo, InstructorRepository>();
+            builder.Services.AddScoped<IStud_CoursesRepo, Stud_CoursesRepository>();
 
             //builder.Services.AddAutoMapper(typeof(MappingProfile));
             MapsterConfig.RegisterMappings();

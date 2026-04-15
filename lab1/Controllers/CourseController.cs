@@ -1,4 +1,4 @@
-﻿using lab1.Data;
+﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,11 +6,16 @@ namespace lab1.Controllers
 {
     public class CourseController : Controller
     {
-        AppDbContext context = new AppDbContext();
+        private readonly ICourseRepo courseRepo;
+
+        public CourseController(ICourseRepo courseRepo)
+        {
+            this.courseRepo = courseRepo;
+        }
 
         public IActionResult Index()
         {
-            var courses = context.Courses.ToList();
+            var courses = courseRepo.GetAll().ToList();
             return View(courses);
         }
 
@@ -25,8 +30,8 @@ namespace lab1.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Courses.Add(course);
-                context.SaveChanges();
+                courseRepo.Add(course);
+                courseRepo.Save();
                 TempData["Success"] = "Course Added Successfully";
                 return RedirectToAction("Index");
             }

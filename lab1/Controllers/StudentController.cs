@@ -1,9 +1,7 @@
-﻿using lab1.Data;
+﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
-using lab1.ViewModels.CourseVM;
 using lab1.ViewModels.StudentVM;
 using Mapster;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,26 +9,27 @@ namespace lab1.Controllers
 {
     public class StudentController : Controller
     {
-        AppDbContext _dbContext = new AppDbContext();
-        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public StudentController(IWebHostEnvironment webHostEnvironment)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IStudentRepo studentRepo;
+        private readonly IDepartmentRepo departmentRepo;
+
+        public StudentController(IWebHostEnvironment webHostEnvironment, IStudentRepo studentRepo
+            , IDepartmentRepo departmentRepo)
         {
             this.webHostEnvironment = webHostEnvironment;
+            this.studentRepo = studentRepo;
+            this.departmentRepo = departmentRepo;
         }
         public IActionResult Index()
         {
-            var students = _dbContext.Students.ToList();
+            var students = studentRepo.GetAll();
             return View("Index", students);
         }
 
         public IActionResult Details(int id)
         {
-            var student = _dbContext.Students
-                .Include(s => s.Department)
-                .Include(s => s.Stud_Courses)
-                .ThenInclude(sc => sc.Course)
-                .FirstOrDefault(s => s.SSN == id);
+            var student = studentRepo.GetStudentWithFullDetails(id);
 
             var vm = student.Adapt<GetStudentWithFullDetialsVM>();
             return View("Details", vm);
@@ -38,7 +37,7 @@ namespace lab1.Controllers
 
         public IActionResult Add()
         {
-            ViewBag.Departments = _dbContext.Departments.ToList();
+            ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View();
         }
 
@@ -74,14 +73,14 @@ namespace lab1.Controllers
 
 
 
-                _dbContext.Students.Add(student);
-                _dbContext.SaveChanges();
+                studentRepo.Add(student);
+                studentRepo.Save();
                 TempData["Success"] = "Student added successfully!";
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Departments = _dbContext.Departments.ToList();
+                ViewBag.Departments = departmentRepo.GetAll().ToList();
                 return View("Add", student);
             }
         }
@@ -89,8 +88,8 @@ namespace lab1.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var student = _dbContext.Students.FirstOrDefault(s => s.SSN == id);
-            ViewBag.Departments = _dbContext.Departments.ToList();
+            var student = studentRepo.GetById(id);
+            ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View(student);
         }
 
@@ -123,14 +122,14 @@ namespace lab1.Controllers
                     student.Image = @"/images/students/" + Filename;
                 }
 
-                _dbContext.Update(student);
-                _dbContext.SaveChanges();
+                studentRepo.Update(student);
+                studentRepo.Save();
                 TempData["Success"] = "Student updated successfully!";
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Departments = _dbContext.Departments.ToList();
+                ViewBag.Departments = departmentRepo.GetAll().ToList();
                 return View("Edit", student);
             }
         }

@@ -1,31 +1,33 @@
-﻿using lab1.Data;
+﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using lab1.ViewModels.InstructorVM;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace lab1.Controllers
 {
     public class InstructorController : Controller
     {
+        private readonly IInstructorRepo instructorRepo;
+        private readonly IDepartmentRepo departmentRepo;
 
-        AppDbContext context = new AppDbContext();
+        public InstructorController(IInstructorRepo instructorRepo, IDepartmentRepo departmentRepo)
+        {
+            this.instructorRepo = instructorRepo;
+            this.departmentRepo = departmentRepo;
+        }
 
 
 
         public IActionResult Index()
         {
-            var instructors = context.Instructors.Include(i => i.Department).ToList();
+            var instructors = instructorRepo.GetInstructorsWithDepartments().ToList();
             return View(instructors);
         }
 
         public IActionResult Details(int id)
         {
-            var instructor = context.Instructors.Include(i => i.Department)
-                .Include(i => i.ins_Courses)
-                    .ThenInclude(ic => ic.Course)
-                .FirstOrDefault(i => i.ins_Id == id);
+            var instructor = instructorRepo.GetInstructorWithDetails(id);
             if (instructor == null)
             {
                 return NotFound();
@@ -39,7 +41,7 @@ namespace lab1.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.Departments = context.Departments.ToList();
+            ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View();
         }
 
@@ -48,14 +50,14 @@ namespace lab1.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Instructors.Add(instructor);
-                context.SaveChanges();
+                instructorRepo.Add(instructor);
+                instructorRepo.Save();
                 TempData["Success"] = "Instructor added successfully!";
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Departments = context.Departments.ToList();
+                ViewBag.Departments = departmentRepo.GetAll().ToList();
                 return View(instructor);
             }
         }
@@ -65,12 +67,12 @@ namespace lab1.Controllers
 
         public IActionResult Edit(int id)
         {
-            var instructor = context.Instructors.Include(i => i.Department).FirstOrDefault(i => i.ins_Id == id);
+            var instructor = instructorRepo.GetInstructorWithDepartment(id);
             if (instructor == null)
             {
                 return NotFound();
             }
-            ViewBag.Departments = context.Departments.ToList();
+            ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View(instructor);
         }
 
@@ -79,29 +81,27 @@ namespace lab1.Controllers
         {
             if (ModelState.IsValid)
             {
-                context.Instructors.Update(instructor);
-                context.SaveChanges();
+                instructorRepo.Update(instructor);
+                instructorRepo.Save();
                 TempData["Success"] = "Instructor updated successfully!";
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Departments = context.Departments.ToList();
+                ViewBag.Departments = departmentRepo.GetAll().ToList();
                 return View(instructor);
             }
         }
 
         public IActionResult Delete(int id)
         {
-            var instructor = context.Instructors
-                .Include(i => i.ins_Courses)
-                .FirstOrDefault(i => i.ins_Id == id);
+            var instructor = instructorRepo.GetById(id);
 
             if (instructor == null)
                 return NotFound();
 
-            context.Instructors.Remove(instructor);
-            context.SaveChanges();
+            instructorRepo.Delete(instructor);
+            instructorRepo.Save();
 
             TempData["Success"] = "Instructor deleted successfully!";
             return RedirectToAction("Index");

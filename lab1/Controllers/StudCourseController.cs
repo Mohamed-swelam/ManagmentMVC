@@ -1,21 +1,23 @@
-﻿using lab1.Data;
+﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using lab1.ViewModels.StudCourseVM;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace lab1.Controllers
 {
     public class StudCourseController : Controller
     {
-        AppDbContext context = new AppDbContext();
+        private readonly IStud_CoursesRepo stud_CoursesRepo;
+
+        public StudCourseController(IStud_CoursesRepo stud_CoursesRepo)
+        {
+            this.stud_CoursesRepo = stud_CoursesRepo;
+        }
 
         [HttpGet]
         public IActionResult AssignCourse(int id)
         {
-            var courses = context.Courses
-               .Where(c => !context.Stud_Courses
-                   .Any(sc => sc.SSN == id && sc.crs_Id == c.crs_Id))
+            var courses = stud_CoursesRepo.GetCoursesAvaliableToAssignToStudent(id)
                .ToList();
 
             if (courses.Count == 0)
@@ -33,19 +35,18 @@ namespace lab1.Controllers
         [HttpPost]
         public IActionResult AssignCourse(int studentId, int courseId)
         {
-            var exists = context.Stud_Courses
-                .Any(sc => sc.SSN == studentId && sc.crs_Id == courseId);
+            var exists = stud_CoursesRepo.IsStudentEnrolledInCourse(studentId, courseId);
 
             if (!exists)
             {
-                context.Stud_Courses.Add(new Stud_Course
+                stud_CoursesRepo.Add(new Stud_Course
                 {
                     SSN = studentId,
                     crs_Id = courseId,
                     Grade = 0
                 });
 
-                context.SaveChanges();
+                stud_CoursesRepo.Save();
                 TempData["Success"] = "Course assigned successfully.";
             }
 
@@ -55,9 +56,7 @@ namespace lab1.Controllers
         [HttpGet]
         public IActionResult EditGrade(int studentId)
         {
-            var courses = context.Stud_Courses
-                .Where(sc => sc.SSN == studentId)
-                .Include(sc => sc.Course)
+            var courses = stud_CoursesRepo.GetCoursesForStudent(studentId)
                 .ToList();
 
             if (courses.Count == 0)
@@ -72,8 +71,7 @@ namespace lab1.Controllers
         [HttpPost]
         public IActionResult EditGrade(EditGradeVM VM)
         {
-            var course = context.Stud_Courses
-                .FirstOrDefault(sc => sc.SSN == VM.studentId && sc.crs_Id == VM.CourseId);
+            var course = stud_CoursesRepo.GetStudCourse(VM.studentId, VM.CourseId);
 
             if (course == null)
             {
@@ -82,8 +80,8 @@ namespace lab1.Controllers
             else
             {
                 course.Grade = VM.Grade;
-                context.SaveChanges();
-                //TempData["Success"]
+                stud_CoursesRepo.Update(course);
+                stud_CoursesRepo.Save();
                 TempData["Success"] = "Grade updated successfully.";
                 return RedirectToAction("Details", "Student", new { id = VM.studentId });
             }

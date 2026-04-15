@@ -1,25 +1,29 @@
-﻿using lab1.Data;
+﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace lab1.Controllers
 {
     public class DepartmentController : Controller
     {
-        AppDbContext context = new AppDbContext();
+        private readonly IDepartmentRepo departmentRepo;
+
+        public DepartmentController(IDepartmentRepo departmentRepo)
+        {
+            this.departmentRepo = departmentRepo;
+        }
+
+
 
         public IActionResult Index()
         {
-            var departments = context.Departments.Include(e => e.Students)
-                    .Include(e => e.Instructors).ToList();
+            var departments = departmentRepo.GetDepartmentsWithDetails().ToList();
             return View(departments);
         }
 
         public IActionResult Details(int id)
         {
-            var department = context.Departments.Include(e => e.Students)
-                    .Include(e => e.Instructors).FirstOrDefault(d => d.DeptId == id);
+            var department = departmentRepo.GetDepartmentWithDetails(id);
             if (department == null)
             {
                 return NotFound();
@@ -37,8 +41,8 @@ namespace lab1.Controllers
         {
             if (department.DeptName != null)
             {
-                context.Departments.Add(department);
-                context.SaveChanges();
+                departmentRepo.Add(department);
+                departmentRepo.Save();
                 TempData["Success"] = "Department added successfully!";
                 return RedirectToAction("Index");
             }
@@ -47,7 +51,7 @@ namespace lab1.Controllers
 
         public IActionResult Edit(int id)
         {
-            var department = context.Departments.FirstOrDefault(d => d.DeptId == id);
+            var department = departmentRepo.GetById(id);
             if (department == null)
             {
                 return NotFound();
@@ -60,8 +64,8 @@ namespace lab1.Controllers
         {
             if (department.DeptName != null)
             {
-                context.Departments.Update(department);
-                context.SaveChanges();
+                departmentRepo.Update(department);
+                departmentRepo.Save();
                 TempData["Success"] = "Department updated successfully!";
                 return RedirectToAction("Index");
             }
@@ -70,13 +74,13 @@ namespace lab1.Controllers
 
         public IActionResult Delete(int id)
         {
-            var department = context.Departments.FirstOrDefault(d => d.DeptId == id);
+            var department = departmentRepo.GetById(id);
             if (department == null)
             {
                 return NotFound();
             }
-            context.Departments.Remove(department);
-            context.SaveChanges();
+            departmentRepo.Delete(department);
+            departmentRepo.Save();
             TempData["Success"] = "Department deleted successfully!";
             return RedirectToAction("Index");
         }

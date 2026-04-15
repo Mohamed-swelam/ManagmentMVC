@@ -1,4 +1,5 @@
 ﻿using lab1.Data;
+using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +7,6 @@ namespace lab1.Validators
 {
     public class UniqueNameAttribute : ValidationAttribute
     {
-        AppDbContext context = new AppDbContext();
         private readonly string _model;
 
         public UniqueNameAttribute(string model)
@@ -22,14 +22,15 @@ namespace lab1.Validators
                 return new ValidationResult("Invalid name");
             }
 
+
             var instance = validationContext.ObjectInstance;
 
             if (_model == "Course")
             {
+                var Courserepo = validationContext.GetService(typeof(ICourseRepo)) as ICourseRepo;
                 var courseVM = instance as Course;
 
-                var existingCourse = context.Courses
-                    .FirstOrDefault(c => c.crs_Name == name);
+                var existingCourse = Courserepo.GetCourseByName(name);
 
                 if (existingCourse != null)
                 {
@@ -41,10 +42,11 @@ namespace lab1.Validators
             }
             else if (_model == "Student")
             {
+                var Studentrepo = validationContext.GetService(typeof(IStudentRepo)) as IStudentRepo;
+
                 var studentVM = instance as Student;
 
-                var existingStudent = context.Students
-                    .FirstOrDefault(s => s.Name == name);
+                var existingStudent = Studentrepo.GetStudentByName(name);
 
                 if (existingStudent != null)
                 {
