@@ -1,6 +1,7 @@
 using lab1.Mapping;
 using lab1.MiddleWares;
 using Mapster;
+using Serilog;
 namespace lab1
 {
     public class Program
@@ -16,6 +17,12 @@ namespace lab1
             MapsterConfig.RegisterMappings();
             builder.Services.AddMapster();
 
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,11 +32,11 @@ namespace lab1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStaticFiles();
-
+            app.UseSerilogRequestLogging();
+            app.UseMiddleware<CustomLoggingMiddleware>();
 
             app.UseRouting();
 
