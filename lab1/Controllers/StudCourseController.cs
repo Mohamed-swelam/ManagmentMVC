@@ -1,10 +1,12 @@
 ﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
 using lab1.ViewModels.StudCourseVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lab1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class StudCourseController : Controller
     {
         private readonly IStud_CoursesRepo stud_CoursesRepo;

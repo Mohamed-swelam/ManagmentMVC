@@ -1,9 +1,10 @@
 ﻿using lab1.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace lab1.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext(DbContextOptions options): base(options)
         {
@@ -17,6 +18,8 @@ namespace lab1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Ins_Course>()
                 .HasKey(ic => new { ic.ins_Id, ic.crs_Id });
 
@@ -40,6 +43,8 @@ namespace lab1.Data
                 .WithMany(i => i.ins_Courses)
                 .HasForeignKey(ic => ic.ins_Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
         }
 
         public DbSet<Student> Students { get; set; }

@@ -2,6 +2,7 @@
 using lab1.Models;
 using lab1.ViewModels.StudentVM;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,12 +22,16 @@ namespace lab1.Controllers
             this.studentRepo = studentRepo;
             this.departmentRepo = departmentRepo;
         }
+
+        [Authorize]
+        [HttpGet]
         public IActionResult Index()
         {
             var students = studentRepo.GetAll();
             return View("Index", students);
         }
-
+        [Authorize]
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var student = studentRepo.GetStudentWithFullDetails(id);
@@ -35,12 +40,14 @@ namespace lab1.Controllers
             return View("Details", vm);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Add()
         {
             ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult AddStudent(Student student)
         {
@@ -84,7 +91,7 @@ namespace lab1.Controllers
                 return View("Add", student);
             }
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -92,7 +99,7 @@ namespace lab1.Controllers
             ViewBag.Departments = departmentRepo.GetAll().ToList();
             return View(student);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Edit(Student student, IFormFile? File)
         {

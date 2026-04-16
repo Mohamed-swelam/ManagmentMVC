@@ -2,10 +2,12 @@
 using lab1.Models;
 using lab1.ViewModels.InstructorVM;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lab1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class InstructorController : Controller
     {
         private readonly IInstructorRepo instructorRepo;

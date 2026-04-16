@@ -44,17 +44,18 @@
             </div>
 
             <hr />
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="mb-0">Courses</h4>
-                <a asp-action="AssignCourse"
-                   asp-controller="StudCourse"
-                   asp-route-id="@Model.SSN"
-                   class="btn btn-info btn-sm rounded-pill px-3">
-                    + Add Course
-                </a>
-            </div>
-
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">Courses</h4>
+                    <a asp-action="AssignCourse"
+                           asp-controller="StudCourse"
+                           asp-route-id="@Model.SSN"
+                           class="btn btn-info btn-sm rounded-pill px-3">
+                        + Add Course
+                    </a>
+                </div>
+            }
             @if (Model.Courses.Any())
             {
                 <div class="list-group">
@@ -72,25 +73,26 @@
                                     Grade: @course.Grade
                                 </span>
                             </div>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex gap-2">
+                                    <a asp-action="EditGrade"
+                                    asp-controller="StudCourse"
+                                    asp-route-studentId="@Model.SSN"
+                                    asp-route-courseId="@course.CourseId"
+                                    class="btn btn-outline-warning btn-sm rounded-pill">
+                                        Edit
+                                    </a>
 
-                            <div class="d-flex gap-2">
-                                <a asp-action="EditGrade"
-                                   asp-controller="StudCourse"
-                                   asp-route-studentId="@Model.SSN"
-                                   asp-route-courseId="@course.CourseId"
-                                   class="btn btn-outline-warning btn-sm rounded-pill">
-                                    Edit
-                                </a>
-
-                                <a asp-action="UnAssignCourse"
-                                   asp-controller="StudCourse"
-                                   asp-route-studentId="@Model.SSN"
-                                   asp-route-courseId="@course.CourseId"
-                                   class="btn btn-outline-danger btn-sm rounded-pill">
-                                    Delete
-                                </a>
-                            </div>
-
+                                    <a asp-action="UnAssignCourse"
+                                    asp-controller="StudCourse"
+                                    asp-route-studentId="@Model.SSN"
+                                    asp-route-courseId="@course.CourseId"
+                                    class="btn btn-outline-danger btn-sm rounded-pill">
+                                        Delete
+                                    </a>
+                                </div>
+                            }
                         </div>
                     }
 
@@ -108,5 +110,5 @@
 </div>
 
 @section Page {
-        Student Details / @Model.Name
+    Student Details / @Model.Name
 }

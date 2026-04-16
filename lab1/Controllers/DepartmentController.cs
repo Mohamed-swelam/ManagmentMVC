@@ -1,9 +1,11 @@
 ﻿using lab1.Interfaces.IRepositories;
 using lab1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace lab1.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class DepartmentController : Controller
     {
         private readonly IDepartmentRepo departmentRepo;
