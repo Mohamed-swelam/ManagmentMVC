@@ -36,6 +36,18 @@
 
             <h4 class="mb-3">Courses</h4>
 
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">Courses</h4>
+                    <a asp-action="AssignCourse"
+                           asp-controller="InsCourse"
+                           asp-route-id="@Model.ins_Id"
+                           class="btn btn-info btn-sm rounded-pill px-3">
+                        + Add Course
+                    </a>
+                </div>
+            }
             @if (Model.Courses.Any())
             {
                 <table class="table table-bordered table-hover text-center">
@@ -44,6 +56,7 @@
                             <th>Course ID</th>
                             <th>Course Name</th>
                             <th>Hours</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +66,23 @@
                                 <td>@course.CourseId</td>
                                 <td>@course.CourseName</td>
                                 <td>@course.Hours</td>
+                                <td>
+                                    <a asp-action="UnassignCourse"
+                                       asp-controller="InsCourse"
+                                       asp-route-instructorId="@Model.ins_Id"
+                                       asp-route-courseId="@course.CourseId"
+                                       class="btn btn-danger btn-sm rounded-pill px-3">
+                                        Unassign
+                                    </a>
+                                    <a asp-action="EditHours"
+                                        asp-controller="InsCourse"
+                                        asp-route-instructorId="@Model.ins_Id"
+                                        asp-route-courseId="@course.CourseId"
+                                        class="btn btn-secondary btn-sm rounded-pill px-3">
+                                        Edit Hours
+                                    </a>
+                                </td>
+
                             </tr>
                         }
                     </tbody>

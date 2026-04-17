@@ -27,7 +27,7 @@ builder.Services.AddScoped<IDepartmentRepo, DepartmentRepoistory>();
 builder.Services.AddScoped<ICourseRepo, CourseRepository>();
 builder.Services.AddScoped<IInstructorRepo, InstructorRepository>();
 builder.Services.AddScoped<IStud_CoursesRepo, Stud_CoursesRepository>();
-
+builder.Services.AddScoped<IIns_CourseRepo, Ins_CourseRepository>();
 
 //identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
