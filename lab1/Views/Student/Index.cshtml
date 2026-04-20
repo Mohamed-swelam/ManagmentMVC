@@ -9,11 +9,18 @@
 }
 @if (User.IsInRole("Admin"))
 {
-    <a class="btn btn-outline-primary" href="/Student/Add">Add Student</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Students</h3>
+        <a class="btn app-btn-primary" href="/Student/Add">Add Student</a>
+    </div>
 }
-<br />
-<br />
-<table class="table table-striped">
+else
+{
+    <h3 class="mb-3">Students</h3>
+}
+
+<div class="table-responsive">
+<table class="table table-striped align-middle">
     <thead>
         <tr>
             <th scope="col">SSN</th>
@@ -50,6 +57,7 @@
 
     </tbody>
 </table>
+</div>
 
 @section Page{
     Students

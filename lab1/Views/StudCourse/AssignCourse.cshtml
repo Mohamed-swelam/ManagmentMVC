@@ -1,19 +1,26 @@
 ﻿@model List<Course>
 
-<h2>Select Course</h2>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Assign Course</h3>
+    <a asp-controller="Student" asp-action="Details" asp-route-id="@ViewBag.StudentId" class="btn btn-outline-primary">Back</a>
+</div>
 
-<form asp-action="AssignCourse">
-    <input type="hidden" name="studentId" value="@ViewBag.StudentId" />
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form asp-action="AssignCourse">
+            <input type="hidden" name="studentId" value="@ViewBag.StudentId" />
 
-    <select name="courseId" class="form-control">
-        @foreach (var course in Model)
-        {
-            <option value="@course.crs_Id">@course.crs_Name</option>
-        }
-    </select>
+            <select name="courseId" class="form-control">
+                @foreach (var course in Model)
+                {
+                    <option value="@course.crs_Id">@course.crs_Name</option>
+                }
+            </select>
 
-    <button type="submit" class="btn btn-success mt-2">Assign</button>
-</form>
+            <button type="submit" class="btn app-btn-primary mt-3">Assign</button>
+        </form>
+    </div>
+</div>
 
 
 

@@ -1,6 +1,12 @@
 ﻿@model GetStudentWithFullDetialsVM
 
-<div class="container mt-5">
+<div class="page-section">
+    @{
+        var totalCourses = Model.Courses.Count();
+        var passedCourses = Model.Courses.Count(c => c.Grade >= c.MinimumDegree);
+        var failedCourses = totalCourses - passedCourses;
+    }
+
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -8,9 +14,21 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="mb-0">Student Profile</h3>
+        <div class="d-flex gap-2">
+            <a asp-action="Index" asp-controller="Student" class="btn btn-outline-primary btn-sm">Back to List</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.SSN" class="btn app-btn-primary btn-sm">Edit Student</a>
+            }
+        </div>
+    </div>
+
     <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
-        <div class="bg-primary text-white p-4 d-flex align-items-center gap-4">
+        <div class="app-gradient-header text-white p-4 d-flex flex-column flex-md-row align-items-md-center gap-4">
 
             @if (!string.IsNullOrEmpty(Model.Image))
             {
@@ -26,76 +44,126 @@
                 </div>
             }
 
-            <div>
+            <div class="flex-grow-1">
                 <h3 class="mb-1">@Model.Name</h3>
-                <span class="badge bg-light text-dark">@Model.DeptName</span>
+                <p class="mb-2 opacity-75">SSN: @Model.SSN</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-light text-black px-3 py-2">Department: @Model.DeptName</span>
+                    <span class="badge bg-dark-subtle text-dark px-3 py-2">Courses: @totalCourses</span>
+                </div>
             </div>
         </div>
 
         <div class="card-body p-4">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <p><i class="fa fa-envelope me-2 text-primary"></i>@Model.Email</p>
-                    <p><i class="fa fa-phone me-2 text-success"></i>@Model.Phone</p>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3 h-100 bg-body-tertiary">
+                        <p class="text-muted mb-1"><i class="fa fa-envelope me-2 text-primary"></i>Email</p>
+                        <p class="mb-0 fw-semibold">@Model.Email</p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <p><i class="fa fa-location-dot me-2 text-danger"></i>@Model.Address</p>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3 h-100 bg-body-tertiary">
+                        <p class="text-muted mb-1"><i class="fa fa-phone me-2 text-success"></i>Phone</p>
+                        <p class="mb-0 fw-semibold">@Model.Phone</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3 h-100 bg-body-tertiary">
+                        <p class="text-muted mb-1"><i class="fa fa-location-dot me-2 text-danger"></i>Address</p>
+                        <p class="mb-0 fw-semibold">@Model.Address</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4 text-center">
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3">
+                        <p class="text-muted mb-1">Total Courses</p>
+                        <h4 class="mb-0">@totalCourses</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3">
+                        <p class="text-muted mb-1">Passed</p>
+                        <h4 class="mb-0 text-success">@passedCourses</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 border rounded-3">
+                        <p class="text-muted mb-1">Failed</p>
+                        <h4 class="mb-0 text-danger">@failedCourses</h4>
+                    </div>
                 </div>
             </div>
 
             <hr />
-            @if (User.IsInRole("Admin"))
-            {
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="mb-0">Courses</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Courses</h4>
+                @if (User.IsInRole("Admin"))
+                {
                     <a asp-action="AssignCourse"
-                           asp-controller="StudCourse"
-                           asp-route-id="@Model.SSN"
-                           class="btn btn-info btn-sm rounded-pill px-3">
+                       asp-controller="StudCourse"
+                       asp-route-id="@Model.SSN"
+                       class="btn app-btn-primary btn-sm rounded-pill px-3">
                         + Add Course
                     </a>
-                </div>
-            }
+                }
+            </div>
+
             @if (Model.Courses.Any())
             {
-                <div class="list-group">
-
-                    @foreach (var course in Model.Courses)
-                    {
-                        var isFail = course.Grade < course.MinimumDegree;
-
-                        <div class="list-group-item d-flex justify-content-between align-items-center rounded-3 mb-2 shadow-sm">
-
-                            <div>
-                                <h6 class="mb-1">@course.CourseName</h6>
-
-                                <span class="badge @(isFail ? "bg-danger" : "bg-success")">
-                                    Grade: @course.Grade
-                                </span>
-                            </div>
-                            @if (User.IsInRole("Admin"))
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th>Course ID</th>
+                                <th>Course Name</th>
+                                <th>Grade</th>
+                                <th>Minimum Degree</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model.Courses)
                             {
-                                <div class="d-flex gap-2">
-                                    <a asp-action="EditGrade"
-                                    asp-controller="StudCourse"
-                                    asp-route-studentId="@Model.SSN"
-                                    asp-route-courseId="@course.CourseId"
-                                    class="btn btn-outline-warning btn-sm rounded-pill">
-                                        Edit
-                                    </a>
+                                var isFail = course.Grade < course.MinimumDegree;
 
-                                    <a asp-action="UnAssignCourse"
-                                    asp-controller="StudCourse"
-                                    asp-route-studentId="@Model.SSN"
-                                    asp-route-courseId="@course.CourseId"
-                                    class="btn btn-outline-danger btn-sm rounded-pill">
-                                        Delete
-                                    </a>
-                                </div>
+                                <tr>
+                                    <td>@course.CourseId</td>
+                                    <td>@course.CourseName</td>
+                                    <td>@course.Grade</td>
+                                    <td>@course.MinimumDegree</td>
+                                    <td>
+                                        <span class="badge @(isFail ? "bg-danger" : "bg-success")">
+                                            @(isFail ? "Fail" : "Pass")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="EditGrade"
+                                               asp-controller="StudCourse"
+                                               asp-route-studentId="@Model.SSN"
+                                               asp-route-courseId="@course.CourseId"
+                                               class="btn btn-secondary btn-sm rounded-pill px-3">
+                                                Edit Grade
+                                            </a>
+
+                                            <a asp-action="UnAssignCourse"
+                                               asp-controller="StudCourse"
+                                               asp-route-studentId="@Model.SSN"
+                                               asp-route-courseId="@course.CourseId"
+                                               class="btn btn-danger btn-sm rounded-pill px-3">
+                                                Unassign
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
                             }
-                        </div>
-                    }
-
+                        </tbody>
+                    </table>
                 </div>
             }
             else

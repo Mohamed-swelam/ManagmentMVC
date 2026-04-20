@@ -2,36 +2,44 @@
 
 
 
-<form asp-action="Add" asp-controller="Course" method="post">
-    <div class="form-group">
-        <label asp-for="crs_Name"></label>
-        <input class="form-control" asp-for="crs_Name">
-        <span asp-validation-for="crs_Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input class="form-control" asp-for="Description">
-        <span asp-validation-for="Description" class="text-danger"></span>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Add Course</h3>
+    <a asp-action="Index" asp-controller="Course" class="btn btn-outline-primary">Back to List</a>
+</div>
 
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form asp-action="Add" asp-controller="Course" method="post">
+            <div class="form-group">
+                <label asp-for="crs_Name"></label>
+                <input class="form-control" asp-for="crs_Name">
+                <span asp-validation-for="crs_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input class="form-control" asp-for="Description">
+                <span asp-validation-for="Description" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Topics"></label>
+                <input class="form-control" asp-for="Topics">
+                <span asp-validation-for="Topics" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalDegree"></label>
+                <input class="form-control" asp-for="TotalDegree">
+                <span asp-validation-for="TotalDegree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumDegree"></label>
+                <input class="form-control" asp-for="MinimumDegree">
+                <span asp-validation-for="MinimumDegree" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn app-btn-primary mt-2">Submit</button>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="Topics"></label>
-        <input class="form-control" asp-for="Topics">
-        <span asp-validation-for="Topics" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="TotalDegree"></label>
-        <input class="form-control" asp-for="TotalDegree">
-        <span asp-validation-for="TotalDegree" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="MinimumDegree"></label>
-        <input class="form-control" asp-for="MinimumDegree">
-        <span asp-validation-for="MinimumDegree" class="text-danger"></span>
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</div>
 
 
 @section Page {

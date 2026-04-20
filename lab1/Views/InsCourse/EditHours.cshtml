@@ -1,23 +1,32 @@
 ﻿@model List<Ins_Course>
 
-<form asp-action="EditHours" method="post">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Edit Hours</h3>
+    <a asp-controller="Instructor" asp-action="Details" asp-route-id="@ViewBag.InstructorId" class="btn btn-outline-primary">Back</a>
+</div>
 
-    <input type="hidden" name="instructorId" value="@ViewBag.InstructorId" />
-    <label>Choose Course</label>
-    <select id="courseSelect" name="CourseId" class="form-control">
-        @foreach (var course in Model)
-        {
-            <option value="@course.crs_Id">
-                @course.Course.crs_Name
-            </option>
-        }
-    </select>
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form asp-action="EditHours" method="post">
 
-    <div class="mt-2">
-        <label>Hours</label>
-        <input type="number" id="hoursInput" name="Hours" class="form-control" />
+            <input type="hidden" name="instructorId" value="@ViewBag.InstructorId" />
+            <label>Choose Course</label>
+            <select id="courseSelect" name="CourseId" class="form-control">
+                @foreach (var course in Model)
+                {
+                    <option value="@course.crs_Id">
+                        @course.Course.crs_Name
+                    </option>
+                }
+            </select>
+
+            <div class="mt-2">
+                <label>Hours</label>
+                <input type="number" id="hoursInput" name="Hours" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn app-btn-primary mt-3">Save</button>
+
+        </form>
     </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Save</button>
-
-</form>
+</div>

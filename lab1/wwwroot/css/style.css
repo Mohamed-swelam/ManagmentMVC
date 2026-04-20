@@ -781,7 +781,7 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	color: #FF6700;
 	margin-right: 15px;
 	border: 1px solid #EBEBEB;
-	border-radius: 50%;
+	border-radius: 40%;
 	width: 40px;
 	height: 40px;
 	line-height: 40px;
@@ -1259,6 +1259,18 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	.post-pagination .pages {
 		display:none;
 	}
+
+    .content-card {
+        padding: 1rem;
+    }
+
+    .app-brand-text {
+        display: none;
+    }
+
+    .content-shell {
+        margin-top: -1.5rem;
+    }
 }
 
 @media only screen and (max-width: 480px) {
@@ -1325,4 +1337,369 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 @keyframes preloader {
 	from { -webkit-transform: rotate(0deg); transform: rotate(0deg);}
 	to { -webkit-transform: rotate(360deg); transform: rotate(360deg);}
+}
+
+/* Advanced App Theme Overrides */
+:root {
+    --app-bg: #f4f7fb;
+    --app-surface: #ffffff;
+    --app-text: #1f2937;
+    --app-primary: #4f46e5;
+    --app-primary-soft: #eef2ff;
+    --app-border: #e5e7eb;
+    --app-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    --app-radius: 16px;
+}
+
+body.app-shell {
+    background: radial-gradient(circle at top right, #e0e7ff 0%, #f4f7fb 35%, #f4f7fb 100%);
+    color: var(--app-text);
+}
+
+.app-header {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.88) !important;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+}
+
+.app-brand-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #111827;
+}
+
+.app-nav-link {
+    color: #334155 !important;
+    border-radius: 999px;
+    padding: .5rem .9rem !important;
+    transition: all .2s ease;
+}
+
+.app-nav-link:hover,
+.app-nav-link:focus {
+    background: var(--app-primary-soft);
+    color: var(--app-primary) !important;
+}
+
+.app-user-chip {
+    background: var(--app-primary-soft);
+    border-radius: 999px;
+    padding: .45rem .9rem !important;
+    color: var(--app-primary) !important;
+}
+
+.app-btn-primary {
+    background: linear-gradient(135deg, var(--app-primary), #6366f1);
+    border: none;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+}
+
+.app-btn-primary:hover,
+.app-btn-primary:focus {
+    color: #fff;
+    filter: brightness(1.03);
+}
+
+.app-btn-outline-danger {
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    background: transparent;
+    border-radius: 999px;
+    padding: .4rem .9rem;
+}
+
+.app-btn-outline-danger:hover,
+.app-btn-outline-danger:focus {
+    background: #ef4444;
+    color: #fff;
+}
+
+.hero-bg {
+    background: url('/images/img/page-background.jpg') center/cover no-repeat;
+    height: 300px;
+    position: relative;
+    border-radius: var(--app-radius);
+    overflow: hidden;
+    box-shadow: var(--app-shadow);
+}
+
+.hero-overlay {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.72), rgba(79, 70, 229, 0.65));
+    position: absolute;
+    inset: 0;
+}
+
+.hero-text {
+    background: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.text-shadow {
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.85);
+}
+
+.content-shell {
+    margin-top: -2.25rem;
+    position: relative;
+    z-index: 3;
+}
+
+.content-card {
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    box-shadow: var(--app-shadow);
+    border: 1px solid var(--app-border);
+    padding: 1.5rem;
+}
+
+.app-footer {
+    background: linear-gradient(135deg, #111827, #1f2937 60%, #312e81) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-footer a {
+    transition: color .2s ease;
+}
+
+.app-footer a:hover {
+    color: #a5b4fc !important;
+}
+
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+}
+
+.table thead th {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--app-border);
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.table tbody tr {
+    transition: background-color .2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8faff;
+}
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="url"],
+input[type="tel"],
+textarea,
+select {
+    border-radius: 10px;
+    border-color: #d1d5db;
+    background-color: #fff;
+    color: #111827;
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="url"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 .2rem rgba(79, 70, 229, 0.15);
+}
+
+.alert {
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid var(--app-border);
+    background: #fff;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle-btn:hover,
+.theme-toggle-btn:focus {
+    background: var(--app-primary-soft);
+    color: var(--app-primary);
+}
+
+.app-gradient-header {
+    background: linear-gradient(120deg, #4f46e5, #7c3aed, #06b6d4);
+}
+
+body.app-shell,
+body.app-shell .content-card,
+body.app-shell .app-header,
+body.app-shell .table,
+body.app-shell .form-control,
+body.app-shell input,
+body.app-shell textarea,
+body.app-shell select {
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+
+body.theme-dark {
+    background: radial-gradient(circle at top right, #111827 0%, #0b1120 40%, #0b1120 100%);
+    color: #e5e7eb;
+}
+
+body.theme-dark .content-card,
+body.theme-dark .card {
+    background: #111827;
+    border-color: #1f2937 !important;
+    color: #e5e7eb;
+}
+
+body.theme-dark .app-header {
+    background: rgba(17, 24, 39, 0.95) !important;
+    border-bottom-color: #1f2937;
+}
+
+body.theme-dark .app-brand-text,
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark h3,
+body.theme-dark h4,
+body.theme-dark h5,
+body.theme-dark h6,
+body.theme-dark p,
+body.theme-dark label,
+body.theme-dark strong,
+body.theme-dark .text-dark {
+    color: #e5e7eb !important;
+}
+
+body.theme-dark .app-nav-link {
+    color: #cbd5e1 !important;
+}
+
+body.theme-dark .app-nav-link:hover,
+body.theme-dark .app-nav-link:focus {
+    background: #1f2937;
+    color: #a5b4fc !important;
+}
+
+body.theme-dark .app-user-chip {
+    background: #1f2937;
+    color: #a5b4fc !important;
+}
+
+body.theme-dark .theme-toggle-btn {
+    background: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.theme-dark .table {
+    border-color: #1f2937;
+    color: #e5e7eb;
+}
+
+body.theme-dark .table thead th {
+    background: #0f172a;
+    border-color: #1f2937;
+    color: #e2e8f0;
+}
+
+body.theme-dark .table tbody td,
+body.theme-dark .table tbody th {
+    border-color: #1f2937;
+    color: #e5e7eb;
+}
+
+body.theme-dark .table tbody tr:hover {
+    background-color: #111a2e;
+}
+
+body.theme-dark .form-control,
+body.theme-dark input[type="text"],
+body.theme-dark input[type="email"],
+body.theme-dark input[type="password"],
+body.theme-dark input[type="number"],
+body.theme-dark input[type="date"],
+body.theme-dark input[type="url"],
+body.theme-dark input[type="tel"],
+body.theme-dark textarea,
+body.theme-dark select {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+body.theme-dark .form-control:focus,
+body.theme-dark input[type="text"]:focus,
+body.theme-dark input[type="email"]:focus,
+body.theme-dark input[type="password"]:focus,
+body.theme-dark input[type="number"]:focus,
+body.theme-dark input[type="date"]:focus,
+body.theme-dark input[type="url"]:focus,
+body.theme-dark input[type="tel"]:focus,
+body.theme-dark textarea:focus,
+body.theme-dark select:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 .2rem rgba(129, 140, 248, 0.2);
+}
+
+body.theme-dark .btn-outline-primary,
+body.theme-dark .btn-outline-secondary,
+body.theme-dark .btn-outline-danger {
+    border-color: #64748b;
+    color: #e2e8f0;
+}
+
+body.theme-dark .btn-outline-primary:hover,
+body.theme-dark .btn-outline-secondary:hover,
+body.theme-dark .btn-outline-danger:hover {
+    background-color: #334155;
+}
+
+.page-section {
+    margin-top: .5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.table-responsive {
+    border-radius: 12px;
+}
+
+@media only screen and (max-width: 767px) {
+    .content-card {
+        padding: 1rem;
+    }
+
+    .app-brand-text {
+        display: none;
+    }
+
+    .content-shell {
+        margin-top: -1.5rem;
+    }
 }

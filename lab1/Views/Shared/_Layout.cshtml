@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - lab1</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lab1.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="app-shell">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 app-header">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">lab1</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -20,26 +22,29 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Students</a>
+                            <a class="nav-link app-nav-link" asp-area="" asp-controller="Student" asp-action="Index">Students</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
+                            <a class="nav-link app-nav-link" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
+                            <a class="nav-link app-nav-link" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
                         </li>
                     </ul>
+                    <button type="button" class="btn theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fa-solid fa-moon" id="themeToggleIcon"></i>
+                    </button>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container content-shell">
+        <main role="main" class="pb-3 content-card">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted app-footer">
         <div class="container">
             &copy; 2026 - lab1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
@@ -47,6 +52,28 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            const body = document.body;
+            const toggle = document.getElementById('themeToggle');
+            const icon = document.getElementById('themeToggleIcon');
+            const savedTheme = localStorage.getItem('app-theme');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('theme-dark');
+                if (icon) icon.className = 'fa-solid fa-sun';
+            }
+
+            if (toggle) {
+                toggle.addEventListener('click', function () {
+                    body.classList.toggle('theme-dark');
+                    const isDark = body.classList.contains('theme-dark');
+                    localStorage.setItem('app-theme', isDark ? 'dark' : 'light');
+                    if (icon) icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+                });
+            }
+        })();
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

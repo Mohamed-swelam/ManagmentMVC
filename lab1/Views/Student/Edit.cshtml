@@ -5,29 +5,39 @@
     var depts = new SelectList(ViewBag.Departments, "DeptId", "DeptName");
 }
 
-<div class="row">
-    <div class="col-12"><a asp-action="Index" asp-controller="Student" class="btn btn-outline-primary">Back to List</a></div>
-    <div class="col-md-8">
-        <form asp-action="Edit" asp-controller="Student" asp-route-id="@Model.SSN" method="post" enctype="multipart/form-data">
-            <input type="hidden" asp-for="SSN" />
-            <input type="hidden" asp-for="Image" />
-            <partial name="_StudentFormPV" />
-            <br />
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Edit Student</h3>
+    <a asp-action="Index" asp-controller="Student" class="btn btn-outline-primary">Back to List</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form asp-action="Edit" asp-controller="Student" asp-route-id="@Model.SSN" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="SSN" />
+                    <input type="hidden" asp-for="Image" />
+                    <partial name="_StudentFormPV" />
+                    <button type="submit" class="btn app-btn-primary mt-2">Save Changes</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-4 text-center">
-        @if (!string.IsNullOrEmpty(Model.Image))
-        {
-            <img src="@Model.Image" class="img-fluid rounded" style="max-height:250px;" />
-        }
-        else
-        {
-            <p>No Image</p>
-        }
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="@Model.Image" class="img-fluid rounded-3" style="max-height:260px; object-fit:fill;" />
+                }
+                else
+                {
+                    <div class="alert alert-secondary mb-0">No Image</div>
+                }
+            </div>
+        </div>
     </div>
-
 </div>
 
 @section Page{
